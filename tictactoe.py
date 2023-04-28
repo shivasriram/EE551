@@ -24,6 +24,14 @@ class TicTacToe:
     def choose_player(self):
         return random.randint(0, 1) # 0 for player 1 and 1 for player 2
     
+    # Check if input is int or not
+    def check_int(self, value):
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False
+
     # Check if move is valid
     def check_valid(self, r, c):
         # Check if row and column are within the board
@@ -39,9 +47,25 @@ class TicTacToe:
     
     # Move made by player
     def move(self, player, r, c):
+        r -= 1
+        c -= 1
         if not self.check_valid(r, c):
-            raise ValueError("Invalid move")
-        self.board[r][c] = player  
+            #raise ValueError("Invalid move")
+            print("Invalid move, try again")
+            r,c = self.get_move()
+            #r,c = map(int, input("Enter row and column: ").split()) 
+        self.board[r][c] = player 
+
+    # Get player move
+    def get_move(self):
+        r,c = input("Enter row and column: ").split()
+        
+        #Check if input is integer, and if integer, check if valid
+        if self.check_int(r) and self.check_int(c):
+            return int(r), int(c)
+        else:
+            print("Invalid input, try again")
+            return self.get_move()
 
 
     # Check win condition
@@ -127,10 +151,11 @@ class TicTacToe:
             self.print_board()
 
             # Get player move
-            r,c = map(int, input("Enter row and column: ").split())
+            #r,c = map(int, input("Enter row and column: ").split())
+            r,c = self.get_move()
 
             # Make move
-            self.move(player, r-1, c-1)
+            self.move(player, r, c)
 
             # Check win condition   
             if self.check_win(player):
