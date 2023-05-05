@@ -10,8 +10,9 @@ time_limit = 10
 class TicTacToe:
     # Constructor   
     def __init__(self):
+        # Initialize board
         self.board = [[' ' for _ in range(3)] for _ in range(3)]
-        # Keep track of wins
+        # Initialize player wins
         self.player1_wins = 0
         self.player2_wins = 0
     
@@ -19,7 +20,7 @@ class TicTacToe:
     def choose_player(self):
         return random.randint(0, 1) # 0 for player 1 and 1 for player 2
     
-    # Check if the input is an integer
+    # Check if the input is an integer using static method
     @staticmethod
     def check_int(value):
         try:
@@ -41,31 +42,33 @@ class TicTacToe:
         
     # Get player move
     def get_move(self):
-        # Get start time
-        #start_time = time.time()
-        while True:
-            # Get user input
-            try :
-                r, c = input("Enter row and column (or type 'q q' or 'quit quit' to quit): ").split()
-                # Check if time limit is reached
-                #if time.time() - start_time > time_limit:
-                    #print("game over")
-                    #self.clear_board()  
-            except:
-                print("Invalid input, try again")
-                return self.get_move()
-            
-            # Check if user wants to quit
-            if r.lower() == "q" or c.lower() == "q" or r.lower() == "quit" or c.lower() == "quit":
-                self.quit_game()
-            try:
-                r, c = int(r), int(c)
-                if not self.check_valid(r - 1, c - 1):
-                    raise ValueError
-                return r - 1, c - 1
-            except:
-                print("Invalid input, try again")
-                return self.get_move()
+    # Get start time
+    #start_time = time.time()
+    #while True:
+        # Get user input
+        try :
+            r, c = input("Enter row and column (or type 'q q' or 'quit quit' to quit): ").split()
+            # Check if time limit is reached
+            #if time.time() - start_time > time_limit:
+                #print("game over")
+                #self.clear_board()  
+        except:
+            print("Invalid input, try again")
+            return self.get_move()
+        
+        # Check if user wants to quit
+        if r.lower() == "q" or c.lower() == "q" or r.lower() == "quit" or c.lower() == "quit":
+            self.quit_game()
+        try:
+            # Convert input to integers
+            r, c = int(r), int(c)
+            # Check if input is valid
+            if not self.check_valid(r - 1, c - 1):
+                raise ValueError
+            return r - 1, c - 1
+        except:
+            print("Invalid input, try again")
+            return self.get_move()
   
     # Quit game
     def quit_game(self):
@@ -77,12 +80,14 @@ class TicTacToe:
         # Check if any row or column has all the same values
         for i in range(3):
             if self.board[i] == [player] * 3:
+                # Update scoreboard if player wins
                 if player == 'X':
                     self.player1_wins += 1
                 else:
                     self.player2_wins += 1
                 return True
             if [self.board[j][i] for j in range(3)] == [player] * 3:
+                # Update scoreboard if player wins
                 if player == 'X':
                     self.player1_wins += 1
                 else:
@@ -90,6 +95,7 @@ class TicTacToe:
                 return True
         # Check if any diagonal has all the same values
         if [self.board[i][i] for i in range(3)] == [player] * 3:
+            # Update scoreboard if player wins
             if player == 'X':
                 self.player1_wins += 1
             else:
@@ -97,6 +103,7 @@ class TicTacToe:
             return True
         # Check if reverse diagonal has all the same values
         if [self.board[i][2 - i] for i in range(3)] == [player] * 3:
+            # Update scoreboard if player wins
             if player == 'X':
                 self.player1_wins += 1
             else:
@@ -126,8 +133,8 @@ class TicTacToe:
         print("Player O wins: ", self.player2_wins)
     
     # Undo move
-    def undo_move(self, r, c):
-        self.board[r][c] = ' '
+    #def undo_move(self, r, c):
+        #self.board[r][c] = ' '
     
     # Clear board
     def clear_board(self):
@@ -184,6 +191,6 @@ class TicTacToe:
                 else:
                     print("Invalid input, please enter 'y' or 'n'")
 
-# Main function
+# Main function (commented for running GUI)
 #tic_tac_toe = TicTacToe()
 #tic_tac_toe.play()
